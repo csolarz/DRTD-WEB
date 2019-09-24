@@ -3,8 +3,27 @@ import { Link } from 'react-router-dom';
 //import logo from './../logo.svg';
 import styled from 'styled-components';
 
+import withFirebaseAuth from 'react-with-firebase-auth';
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+import firebaseConfig from '../../firebaseConfig';
+
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+
+const NavWrapper = styled.nav`
+    .nav-link {
+        color: var(--mainWhite) !important; 
+        font-size: 1.05rem;
+    }`;
+
 class NavBar extends Component {
     render() {
+        const {
+            user,
+            signOut,
+            signInWithGoogle,
+          } = this.props;
+
         return(
             <NavWrapper className="navbar navbar-expand-sm bg-primary navbar-dark px-sm-5">
                 <Link to="/">
@@ -16,15 +35,28 @@ class NavBar extends Component {
                         <Link to="/" className="nav-link">Productos</Link>
                     </li>
                 </ul>
+                {
+                    user 
+                    ? <p>Hello, {user.displayName}</p> 
+                    : null
+                }
+                {
+                    user 
+                    ? <button onClick={signOut}>Sign out</button>
+                    : <button onClick={signInWithGoogle}>Sign in with Google</button>
+                }
             </NavWrapper>
         )
     }
 }
 
-const NavWrapper = styled.nav`
-    .nav-link {
-        color: var(--mainWhite) !important; 
-        font-size: 1.05rem;
-    }`;
+const firebaseAppAuth = firebaseApp.auth();
 
-export default NavBar;
+const providers = {
+    googleProvider: new firebase.auth.GoogleAuthProvider(),
+};
+
+export default withFirebaseAuth({
+    providers,
+    firebaseAppAuth,
+})(NavBar);
