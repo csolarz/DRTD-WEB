@@ -1,16 +1,20 @@
 :root {
   --mainBlue: #2a2a72;
-  --lightBlue: #009ffb;
+  --lightBlue: #1a1a1a;
   --mainWhite: #f7f7f7;
   --mainDark: #232323;
   --mainYellow: #fa33b8;
+  --headerBlack: #1a1a1a;
 }
 
 body {
-  /* temp dirty */
-  /* font-family: 'Oswald', sans-serif !important; */
   background: var(--mainWhite) !important;
   color: var(--mainDark) !important;
+}
+
+.bg-primary-ripley {
+  background: var(--headerBlack) !important;
+  color: var(--mainWhite) !important;
 }
 
 .text-title {

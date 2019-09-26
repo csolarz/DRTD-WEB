@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
-//import logo from './../logo.svg';
 import styled from 'styled-components';
 
 import withFirebaseAuth from 'react-with-firebase-auth';
@@ -12,7 +11,7 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 const NavWrapper = styled.nav`
     .nav-link {
-        color: var(--mainWhite) !important; 
+        color: var(--headerBlack) !important; 
         font-size: 1.05rem;
     }`;
 
@@ -25,11 +24,7 @@ class NavBar extends Component {
           } = this.props;
 
         return(
-            <NavWrapper className="navbar navbar-expand-sm bg-primary navbar-dark px-sm-5">
-                <Link to="/">
-                    { /* <img src={logo} alt="Logo" className="navbar-brand" style={{width: '50px', height: '50px'}} */ }
-                    />
-                </Link>
+            <NavWrapper className="navbar navbar-expand-sm bg-primary-ripley navbar-dark px-sm-5">
                 <ul className="navbar-nav align-items-center">
                     <li className="nav-item ml-5">
                         <Link to="/" className="nav-link">Productos</Link>
