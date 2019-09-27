@@ -6,6 +6,8 @@
 trigger:
 - master
 
+
+
 jobs:
 - job: NPM
   pool:
