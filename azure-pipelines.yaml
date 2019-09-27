@@ -6,12 +6,10 @@
 trigger:
 - master
 
-
-
 jobs:
 - job: NPM
   pool:
-    name: Host linux local
+    name: Azure Pipelines
   steps:
   - task: NodeTool@0
     inputs:
