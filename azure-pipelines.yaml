@@ -29,7 +29,7 @@ jobs:
 - job: Docker
   dependsOn: NPM
   pool:
-    name: Host linux local
+    name: Azure Pipelines
   steps:
   - task: DownloadBuildArtifacts@0
     displayName: 'Download Build Artifact'
