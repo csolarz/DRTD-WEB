@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: drtd-web-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "540"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "540"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "540"
+spec:
+  tls:
+  - hosts:
+    - web.aks-drtd-dns-7e0412ea.hcp.westus2.azmk8s.io
+    secretName: default-server-secret
+  rules:
+  - host: web.aks-drtd-dns-7e0412ea.hcp.westus2.azmk8s.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: drtd-web-svc
+          servicePort: 80

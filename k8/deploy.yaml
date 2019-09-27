@@ -1,0 +1,25 @@
+apiVersion: apps/v1beta1 # for versions before 1.7.0 use apps/v1beta1
+kind: Deployment
+metadata:
+  name: drtd-web
+  labels:
+    app: drtd-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: drtd-web
+  template:
+    metadata:
+      labels:
+        app: drtd-web
+    spec:
+      containers:
+      - name: drtd-web
+        image: malabareand/drtd-web:#{Build.BuildId}#
+        ports:
+        - containerPort: 80
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+      imagePullSecrets:
+        - name: azureregistryisapre
