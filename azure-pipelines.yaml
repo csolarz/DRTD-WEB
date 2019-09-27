@@ -1,40 +1,43 @@
-trigger:
-- master
+pool:
+  name: Azure Pipelines
+steps:
+- task: NodeTool@0
+  displayName: 'Use Node 10.x'
+  inputs:
+    versionSpec: 10.x
 
-jobs:
-- job: Build
-  pool:
-    name: Azure Pipelines
-  steps:
-  - task: NodeTool@0
-    displayName: 'Use Node 10.x'
-    inputs:
-      versionSpec: 10.x
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    verbose: false
 
-  - task: Npm@1
-    displayName: 'npm install'
-    inputs:
-      verbose: false
+- task: Npm@1
+  displayName: 'npm build'
+  inputs:
+    command: custom
+    verbose: false
+    customCommand: build
 
-  - task: Npm@1
-    displayName: 'npm build'
-    inputs:
-      command: custom
-      verbose: false
-      customCommand: build
+- task: Docker@2
+  displayName: login
+  inputs:
+    containerRegistry: 'malabareand dockerHub'
+    command: login
 
-  - task: Docker@2
-    displayName: Dockerize
-    inputs:
-      containerRegistry: 'malabareand dockerHub'
-      repository: 'drtd-web'
+- task: Docker@2
+  displayName: dockerize
+  inputs:
+    command: buildAndPush
+    containerRegistry: 'malabareand dockerHub'
+    repository: 'drtd-web'
+    Dockerfile: Dockerfile
 
-  - task: CopyFiles@2
-    displayName: 'Copy kubernetes manifests files'
-    inputs:
-      SourceFolder: ci
-      Contents: '*.yaml'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+- task: CopyFiles@2
+  displayName: 'Copy kubernetes manifests files'
+  inputs:
+    SourceFolder: ci
+    Contents: '*.yaml'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact in drop folder'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact in drop folder'
