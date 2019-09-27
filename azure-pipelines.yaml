@@ -3,7 +3,6 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
-
 trigger:
 - master
 
@@ -38,29 +37,13 @@ jobs:
       artifactName: 'build_$(Build.BuildId)'
       downloadPath: '$(System.DefaultWorkingDirectory)/build'
 
-  - task: Docker@0
-    displayName: Build
+  - task: Docker@2
+    displayName: 'Build and push'
     inputs:
-      containerregistrytype: 'Container Registry'
-      dockerRegistryConnection: 'DRTD Registry'
-      action: 'Run a Docker command'
-      customCommand: 'build -t drtd-web:$(Build.BuildId) -f ./Dockerfile.nginx .'
-
-  - task: Docker@0
-    displayName: Tag
-    inputs:
-      containerregistrytype: 'Container Registry'
-      dockerRegistryConnection: 'DRTD Registry'
-      action: 'Run a Docker command'
-      customCommand: 'tag drtd-web:$(Build.BuildId) drtd.azurecr.io/drtd-web:$(Build.BuildId)'
-
-  - task: Docker@0
-    displayName: Push
-    inputs:
-      containerregistrytype: 'Container Registry'
-      dockerRegistryConnection: 'DRTD Registry'
-      action: 'Run a Docker command'
-      customCommand: 'push drtd.azurecr.io/drtd-web:$(Build.BuildId)'
+      containerRegistry: 'malabareand dockerHub'
+      repository: 'drtd-web'
+      command: 'buildAndPush'
+      Dockerfile: '**/Dockerfile.nginx'
       
   - task: CopyFiles@2
     displayName: 'Copy kubernetes manifests files'
